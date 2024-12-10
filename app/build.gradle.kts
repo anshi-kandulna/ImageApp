@@ -71,7 +71,8 @@ dependencies {
     //RecyclerView
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview) // Use the latest version if possible
-   
+    //material components
+    implementation(libs.material)
 
 
 }

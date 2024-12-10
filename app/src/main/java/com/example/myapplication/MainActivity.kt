@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.NestedScrollView
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -14,8 +14,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
+
     lateinit var recyclerView: RecyclerView
     lateinit var myAdapter: MyAdapter
+    lateinit var searchView: SearchView
     var currentPage = 1
     val pageSize = 80
     var isLoading = false
@@ -24,8 +26,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         supportActionBar?.hide()
 
+        // Set up the RecyclerView
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
@@ -33,8 +37,24 @@ class MainActivity : AppCompatActivity() {
         myAdapter = MyAdapter(this, mutableListOf())
         recyclerView.adapter = myAdapter
 
-        // Call the method to load the first page of images
-        loadImages(currentPage)
+        // Initialize the SearchView
+        searchView = findViewById(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    currentPage = 1  // Reset to the first page
+                    loadImages(query, currentPage)  // Load images based on the query
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+
+        // Call the method to load random images by default when the app starts
+        loadImages("", currentPage)
 
         // Set up the scroll listener for pagination
         val layoutManager = recyclerView.layoutManager as GridLayoutManager
@@ -45,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 // Check if the user has scrolled to the bottom
                 if (!recyclerView.canScrollVertically(1)) {
                     if (!isLoading) {
-                        loadImages(currentPage)  // Load the next page
+                        loadImages(searchView.query.toString(), currentPage)  // Load next page based on search query
                     }
                 }
             }
@@ -53,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Method to load images from the API
-    private fun loadImages(page: Int) {
+    private fun loadImages(query: String, page: Int) {
         isLoading = true
 
         val retrofitBuilder = Retrofit.Builder()
@@ -62,8 +82,13 @@ class MainActivity : AppCompatActivity() {
             .build()
             .create(ApiService::class.java)
 
-        // Fetch images with the current page count
-        val retrofitData = retrofitBuilder.getImageData(perPage = pageSize, pageCount = page)
+        val retrofitData: Call<PexelsPhotoResponse> = if (query.isEmpty()) {
+            // Fetch random images if the query is empty
+            retrofitBuilder.getRandomImages(perPage = pageSize, pageCount = page)
+        } else {
+            // Otherwise, fetch images based on the search query
+            retrofitBuilder.searchImages(query, perPage = pageSize, pageCount = page)
+        }
 
         retrofitData.enqueue(object : Callback<PexelsPhotoResponse> {
             override fun onResponse(call: Call<PexelsPhotoResponse>, response: Response<PexelsPhotoResponse>) {
@@ -94,5 +119,3 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
-
-
