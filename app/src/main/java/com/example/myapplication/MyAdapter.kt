@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class MyAdapter(val context: MainActivity, val photosArrayList: List<Photo>):
+class MyAdapter(val context: MainActivity, val photosArrayList: MutableList<Photo>):
 RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
 
 
@@ -41,6 +41,13 @@ RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
             title = itemView.findViewById(R.id.textView)
             image = itemView.findViewById(R.id.imageView)
         }
+    }
+
+    // Method to add new items to the adapter
+    fun addItems(newPhotos: List<Photo>) {
+        val positionStart = photosArrayList.size
+        photosArrayList.addAll(newPhotos)
+        notifyItemRangeInserted(positionStart, newPhotos.size)
     }
 
 }

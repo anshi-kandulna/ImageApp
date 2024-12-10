@@ -4,7 +4,7 @@ data class PexelsPhotoResponse(
     val total_results: Int,
     val page: Int,
     val per_page: Int,
-    val photos: List<Photo>,
+    val photos: MutableList<Photo>,
     val next_page: String?
 )
 

@@ -1,7 +1,9 @@
 [versions]
 agp = "8.7.2"
 cardview = "1.0.0"
+constraintlayoutVersion = "2.1.0"
 converterGson = "2.9.0"
+coreKtxVersion = "1.7.0"
 glide = "4.16.0"
 glideVersion = "4.15.1"
 kotlin = "2.0.0"
@@ -20,10 +22,13 @@ appcompat = "1.7.0"
 recyclerviewVersion = "1.2.1"
 retrofit = "2.9.0"
 gridlayout = "1.0.0"
+core = "1.15.0"
 
 [libraries]
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+androidx-constraintlayout-v210 = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx-v170 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-lifecycle-runtime-ktx-v231 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
 androidx-recyclerview-v121 = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerviewVersion" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
@@ -49,6 +54,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

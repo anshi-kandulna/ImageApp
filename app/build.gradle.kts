@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.gridlayout)
+    implementation(libs.androidx.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,6 +70,8 @@ dependencies {
     annotationProcessor(libs.compiler)
     //RecyclerView
     implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.cardview) // Use the latest version if possible
+   
+
 
 }
